@@ -1,149 +1,73 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const schematics_1 = require("@angular-devkit/schematics");
 const testing_1 = require("@angular-devkit/schematics/testing");
-const collectionPath = require.resolve('../collection.json');
-describe('simple-schematic', () => {
-    const testRunner = new testing_1.SchematicTestRunner('rocket', collectionPath);
+const path = require("path");
+describe('cache-handler', () => {
+    const collectionPath = path.join(__dirname, '../collection.json');
+    const schematicRunner = new testing_1.SchematicTestRunner('schematics', path.join(__dirname, './../collection.json'));
     const workspaceOptions = {
         name: 'workspace',
         newProjectRoot: 'projects',
-        version: '6.0.0',
+        version: '0.5.0',
     };
-    describe('with project', () => {
-        const appOptions = {
-            name: 'bar',
-            inlineStyle: false,
-            inlineTemplate: false,
-            routing: false,
-            skipTests: false,
-            skipPackageJson: false,
-        };
-        let appTree;
-        beforeEach(() => {
-            appTree = testRunner.runExternalSchematic('@schematics/angular', 'workspace', workspaceOptions);
-            appTree = testRunner.runExternalSchematic('@schematics/angular', 'application', appOptions, appTree);
-        });
-        it('fails with missing tree', () => {
-            expect(() => testRunner.runSchematic('simple-schematic', {
-                name: "test"
-            }, schematics_1.Tree.empty())).toThrow();
-        });
-        // it('fails with missing params', () => {
-        //     expect(() => testRunner.runSchematic('simple-schematic', {}, appTree)).toThrowError(InvalidInputOptions, 
-        //     'Schematic input does not validate against the Schema: {"spec":true,"flat":false}\n'+
-        //     'Errors:\n\n'+
-        //     '  Data path "" should have required property \'name\'.');
-        // });
-        it('works', () => {
-            const tree = testRunner.runSchematic('simple-schematic', {
-                name: "test"
-            }, appTree);
-            expect(tree.files).toEqual([
-                "/README.md",
-                "/angular.json",
-                "/package.json",
-                "/tsconfig.json",
-                "/tslint.json",
-                "/.editorconfig",
-                "/.gitignore",
-                "/projects/bar/browserslist",
-                "/projects/bar/karma.conf.js",
-                "/projects/bar/tsconfig.app.json",
-                "/projects/bar/tsconfig.spec.json",
-                "/projects/bar/tslint.json",
-                "/projects/bar/src/favicon.ico",
-                "/projects/bar/src/index.html",
-                "/projects/bar/src/main.ts",
-                "/projects/bar/src/polyfills.ts",
-                "/projects/bar/src/test.ts",
-                "/projects/bar/src/styles.css",
-                "/projects/bar/src/assets/.gitkeep",
-                "/projects/bar/src/environments/environment.prod.ts",
-                "/projects/bar/src/environments/environment.ts",
-                "/projects/bar/src/app/app.module.ts",
-                "/projects/bar/src/app/app.component.css",
-                "/projects/bar/src/app/app.component.html",
-                "/projects/bar/src/app/app.component.spec.ts",
-                "/projects/bar/src/app/app.component.ts",
-                "/projects/bar/src/app/test/test.spec.ts",
-                "/projects/bar/src/app/test/test.ts",
-                "/projects/bar-e2e/protractor.conf.js",
-                "/projects/bar-e2e/tsconfig.e2e.json",
-                "/projects/bar-e2e/src/app.e2e-spec.ts",
-                "/projects/bar-e2e/src/app.po.ts",
-            ]);
-            // -- or --
-            expect(tree.files).toContain("/projects/bar/src/app/test/test.spec.ts");
-            expect(tree.files).toContain("/projects/bar/src/app/test/test.ts");
-            expect(tree.readContent("/projects/bar/src/app/test/test.ts")).toContain("export class Test {\n" +
-                "\n" +
-                "}");
+    const appOptions = {
+        name: 'schematest'
+    };
+    const schemaOptions = {
+        name: 'foo'
+    };
+    let appTree;
+    beforeEach(() => {
+        appTree = schematicRunner.runExternalSchematic('@schematics/angular', 'workspace', workspaceOptions);
+        appTree = schematicRunner.runExternalSchematic('@schematics/angular', 'application', appOptions, appTree);
+    });
+    it('should create cache service', (done) => {
+        const runner = new testing_1.SchematicTestRunner('schematics', collectionPath);
+        runner.runSchematicAsync('cache-handler', {project: 'schematest'}, appTree).toPromise().then(tree => {
+           const serviceContent = tree.readContent('/projects/schematest/src/app/shared/services/cache.service.ts');
+            expect(serviceContent.indexOf('CacheService') > 0).toEqual(true);
+            done();
         });
     });
-    describe('without project', () => {
-        const appOptions = {
-            name: 'bar',
-            projectRoot: '',
-            inlineStyle: false,
-            inlineTemplate: false,
-            routing: false,
-            skipTests: false,
-            skipPackageJson: false,
-        };
-        let appTree;
-        beforeEach(() => {
-            appTree = testRunner.runExternalSchematic('@schematics/angular', 'workspace', workspaceOptions);
-            appTree = testRunner.runExternalSchematic('@schematics/angular', 'application', appOptions, appTree);
+    it('should create cache factory', (done) => {
+        const runner = new testing_1.SchematicTestRunner('schematics', collectionPath);
+        runner.runSchematicAsync('cache-handler', {project: 'schematest'}, appTree).toPromise().then(tree => {
+           const serviceContent = tree.readContent('/projects/schematest/src/app/shared/services/cache.factory.ts');
+            expect(serviceContent.indexOf('subscribeSWEvetns') > 0).toEqual(true);
+            done();
         });
-        it('fails with missing tree', () => {
-            expect(() => testRunner.runSchematic('simple-schematic', {}, schematics_1.Tree.empty())).toThrow();
+    });
+    it('should import cache service in app module', (done) => {
+        const runner = new testing_1.SchematicTestRunner('schematics', collectionPath);
+        runner.runSchematicAsync('cache-handler', {project: 'schematest'}, appTree).toPromise().then(tree => {
+           const serviceContent = tree.readContent('/projects/schematest/src/app/app.module.ts');
+            expect(serviceContent.indexOf("import { CacheService } from 'src/app/shared/services/cache.service';") > 0).toEqual(true);
+            done();
         });
-        it('fails with missing params', () => {
-            expect(() => testRunner.runSchematic('simple-schematic', {}, appTree)).toThrow();
+    });
+    it('should import cache factory in app module', (done) => {
+        const runner = new testing_1.SchematicTestRunner('schematics', collectionPath);
+        runner.runSchematicAsync('cache-handler', {project: 'schematest'}, appTree).toPromise().then(tree => {
+           const serviceContent = tree.readContent('/projects/schematest/src/app/app.module.ts');
+            expect(serviceContent.indexOf("import { subscribeSwEvents } from 'src/app/shared/services/cache.factory';") > 0).toEqual(true);
+            done();
         });
-        // it('works', () => {
-        //     const tree = testRunner.runSchematic('simple-schematic', {
-        //         name: "test"
-        //     }, appTree);
-        //     expect(tree.files).toEqual([
-        //         "/README.md",
-        //         "/angular.json",
-        //         "/package.json",
-        //         "/tsconfig.json",
-        //         "/tslint.json",
-        //         "/.editorconfig",
-        //         "/.gitignore",
-        //         "/src/favicon.ico",
-        //         "/src/index.html",
-        //         "/src/main.ts",
-        //         "/src/polyfills.ts",
-        //         "/src/test.ts",
-        //         "/src/styles.css",
-        //         "/src/browserslist",
-        //         "/src/karma.conf.js",
-        //         "/src/tsconfig.app.json",
-        //         "/src/tsconfig.spec.json",
-        //         "/src/tslint.json",
-        //         "/src/assets/.gitkeep",
-        //         "/src/environments/environment.prod.ts",
-        //         "/src/environments/environment.ts",
-        //         "/src/app/app.module.ts",
-        //         "/src/app/app.component.css",
-        //         "/src/app/app.component.html",
-        //         "/src/app/app.component.spec.ts",
-        //         "/src/app/app.component.ts",
-        //         "/src/app/test/test.spec.ts",
-        //         "/src/app/test/test.ts",
-        //         "/e2e/protractor.conf.js",
-        //         "/e2e/tsconfig.e2e.json",
-        //         "/e2e/src/app.e2e-spec.ts",
-        //         "/e2e/src/app.po.ts"
-        //     ]);
-        //     // -- or --
-        //     expect(tree.files.indexOf("/src/app/test/test.spec.ts")).toBeGreaterThanOrEqual(0);
-        //     expect(tree.files.indexOf("/src/app/test/test.ts")).toBeGreaterThanOrEqual(0);
-        // });
+    });
+    it('should import APP_INITIALIZER in app module', (done) => {
+        const runner = new testing_1.SchematicTestRunner('schematics', collectionPath);
+        runner.runSchematicAsync('cache-handler', {project: 'schematest'}, appTree).toPromise().then(tree => {
+           const serviceContent = tree.readContent('/projects/schematest/src/app/app.module.ts');
+            expect(serviceContent.indexOf("import { NgModule, APP_INITIALIZER, Injector } from '@angular/core';") > 0).toEqual(true);
+            done();
+        });
+    });
+    it('should add APP_INITIALIZER for subscribeSwEvents in app module', (done) => {
+        const runner = new testing_1.SchematicTestRunner('schematics', collectionPath);
+        runner.runSchematicAsync('cache-handler', {project: 'schematest'}, appTree).toPromise().then(tree => {
+           const serviceContent = tree.readContent('/projects/schematest/src/app/app.module.ts');
+            expect(serviceContent.indexOf(`provide: APP_INITIALIZER,`) > 0).toEqual(true);
+            done();
+        });
     });
 });
 //# sourceMappingURL=index_spec.js.map
