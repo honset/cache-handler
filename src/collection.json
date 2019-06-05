@@ -1,0 +1,15 @@
+{
+  "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
+  "schematics": {
+    "cache-handler": {
+      "description": "A blank schematic.",
+      "factory": "./cache-handler/index#cacheHandler",
+      "schema": "./cache-handler/schema.json"
+    },
+     "ng-add": {
+      "factory": "./ng-add/index",
+      "description": "Add schematic",
+      "schema": "./cache-handler/schema.json"
+    }
+  }
+}
