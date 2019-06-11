@@ -1,3 +1,3 @@
-import { Rule, Tree } from '@angular-devkit/schematics';
-export declare function setupOptions(host: Tree, options: any): Tree;
-export declare function cacheHandler(_options: any): Rule;
+import { Rule } from '@angular-devkit/schematics';
+import { Schema as ServiceWorkerOptions } from './schema';
+export declare function cacheHandler(_options: ServiceWorkerOptions): Rule;

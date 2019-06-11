@@ -1,2 +1,3 @@
 import { Rule } from '@angular-devkit/schematics';
-export default function (options: any): Rule;
+import { Schema as ServiceWorkerOptions } from '../cache-handler/schema';
+export default function (options: ServiceWorkerOptions): Rule;

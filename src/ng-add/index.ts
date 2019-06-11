@@ -1,9 +1,11 @@
 import { chain, Rule, schematic, SchematicContext, Tree, } from '@angular-devkit/schematics';
+import { Schema as ServiceWorkerOptions } from '../cache-handler/schema';
 
-export default function (options: any): Rule {
+
+export default function (options: ServiceWorkerOptions): Rule {
   return (host: Tree, context: SchematicContext) => {
     return chain([
-      schematic('my-component', options)
+      schematic('cache-handler', options)
     ])(host, context);
   };
 }
