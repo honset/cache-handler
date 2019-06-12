@@ -1,4 +1,4 @@
-# Getting Started With Cache Handler
+# Introduction
 Library that will take care of cache handling for any rich enterprise application. The purpose of this library is to forcefully treat a new deployment of a web application as if it were the first time that the user has ever visited the site. The overall goal is to have as few steps as possible to reload everything.
 All the forced refresh/cache clearing stuff should happen only 1 time for any given application deployment. And this needs to be reloaded on user confirmation even if the user is in the middle of doing something as the application is a single page rich application.
 The user should not continually experience this behaviour on a periodic basis. Only when a new version of the application
@@ -20,7 +20,7 @@ The Service worker's behaviour follows that design goal:
 
 To support these behaviours, the Angular service worker loads a manifest file (ngsw-config.json) from the server. The manifest describes the resources to cache and includes hashes of every file's contents. When an update to the application is deployed, the contents of the manifest change, informing the service worker that a new version of the application should be downloaded and cached.
 
-### Adding a service worker to your project
+### Getting started with cache handler
 To set up the Service worker in your project, use the below CLI command. It takes care of configuring your app to use service workers by adding the service-worker package along with setting up the necessary support files.
 
 ng add cache-handler --project *project-name*
