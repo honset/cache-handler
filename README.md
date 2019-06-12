@@ -22,6 +22,7 @@ To support these behaviours, the Angular service worker loads a manifest file (n
 
 ### Adding a service worker to your project
 To set up the Service worker in your project, use the below CLI command. It takes care of configuring your app to use service workers by adding the service-worker package along with setting up the necessary support files.
+
 ng add cache-handler --project *project-name*
 
 Now, build the project:
