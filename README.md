@@ -7,11 +7,17 @@ The user should not continually experience this behaviour on a periodic basis. O
 At its simplest, a service worker is a script that runs in the web browser and manages caching for an application.
 Service workers function as a network proxy. They intercept all outgoing HTTP requests made by the application and can choose how to respond to them. For example, they can query a local cache and deliver a cached response if one is available. Proxying isn't limited to requests made through programmatic APIs, such as fetch; it also includes resources referenced in HTML and even the initial request to index.html. Service worker-based caching is thus completely programmable and doesn't rely on server-specified caching headers.
 The Service worker's behaviour follows that design goal:
+
 •	Caching an application is like installing a native application. The application is cached as one unit, and all files update together.
+
 •	A running application continues to run with the same version of all files. It does not suddenly start receiving cached files from a newer version, which are likely incompatible.
+
 •	When users refresh the application, they see the latest fully cached version. New tabs load the latest cached code.
+
 •	Updates happen in the background, relatively quickly after changes are published. The previous version of the application is served until an update is installed and ready.
+
 •	The service worker conserves bandwidth when possible. Resources are only downloaded if they've changed.
+
 To support these behaviours, the Angular service worker loads a manifest file (ngsw-config.json) from the server. The manifest describes the resources to cache and includes hashes of every file's contents. When an update to the application is deployed, the contents of the manifest change, informing the service worker that a new version of the application should be downloaded and cached.
 
 ### Adding a service worker to your project
@@ -33,8 +39,10 @@ Notice that all of the files the browser needs to render this application are ca
 •	favicon.ico.
 •	Build artifacts (JS and CSS bundles).
 •	Anything under assets.
-•	Images and fonts directly under the configured outputPath (by default ./dist/<project-name>/) 
+•	Images and fonts directly under the configured outputPath (by default ./dist/<project-name>/)
+  
 You can modify the default configuration to your need and add Rest API URLs as well.
+
 ### Available and activated updates
 Export Class CacheService {
 ……………..
