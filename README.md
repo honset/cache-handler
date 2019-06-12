@@ -21,7 +21,7 @@ The Service worker's behaviour follows that design goal:
 To support these behaviours, the Angular service worker loads a manifest file (ngsw-config.json) from the server. The manifest describes the resources to cache and includes hashes of every file's contents. When an update to the application is deployed, the contents of the manifest change, informing the service worker that a new version of the application should be downloaded and cached.
 
 ### Adding a service worker to your project
-To set up the Service worker in your project, use the CLI command ng add @angular/pwa. It takes care of configuring your app to use service workers by adding the service-worker package along with setting up the necessary support files.
+To set up the Service worker in your project, use the below CLI command. It takes care of configuring your app to use service workers by adding the service-worker package along with setting up the necessary support files.
 ng add cache-handler --project *project-name*
 
 Now, build the project:
