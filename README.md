@@ -25,41 +25,67 @@ To set up the Service worker in your project, use the CLI command ng add @angula
 ng add cache-handler --project *project-name*
 
 Now, build the project:
+
 ng build --prod
 
 To serve the directory containing your web files with http-server, run the following command
+
 http-server -p 8080 -c-1 dist/<project-name> 
 
 ### Initial load
+
 With the server running, you can point your browser at http://localhost:8080/. Your application should load normally.
 
 ### What's being cached?
+
 Notice that all of the files the browser needs to render this application are cached. The ngsw-config.json boilerplate configuration is set up to cache the specific resources:
+
 •	index.html.
+
 •	favicon.ico.
+
 •	Build artifacts (JS and CSS bundles).
+
 •	Anything under assets.
+
 •	Images and fonts directly under the configured outputPath (by default ./dist/<project-name>/)
   
 You can modify the default configuration to your need and add Rest API URLs as well.
 
 ### Available and activated updates
+
 Export Class CacheService {
+
 ……………..
+
 updates.available.subscribe(event => { console.log('current version is', event.current); console.log('available version is', event.available); }); updates.activated.subscribe(event => { console.log('old version was', event.previous); console.log('new version is', event.current); });
+
 ………………
+
 }
+
 ### Checking for updates
+
 Export Class CacheService {
+
 ……………..
+
 const appIsStable$ = appRef.isStable.pipe(first(isStable => isStable === true)); const everySixHours$ = interval(6 * 60 * 60 * 1000); const everySixHoursOnceAppIsStable$ = concat(appIsStable$, everySixHours$); everySixHoursOnceAppIsStable$.subscribe(() => updates.checkForUpdate());
+
 ………………
+
 }
+
 ### Forcing update activation
+
 Export Class CacheService {
+
 ……………..
+
 updates.available.subscribe(event => { if (promptUser(event)) { updates.activateUpdate().then(() => document.location.reload()); } });
+
 ………………
+
 }
 
 
