@@ -8,15 +8,15 @@ At its simplest, a service worker is a script that runs in the web browser and m
 Service workers function as a network proxy. They intercept all outgoing HTTP requests made by the application and can choose how to respond to them. For example, they can query a local cache and deliver a cached response if one is available. Proxying isn't limited to requests made through programmatic APIs, such as fetch; it also includes resources referenced in HTML and even the initial request to index.html. Service worker-based caching is thus completely programmable and doesn't rely on server-specified caching headers.
 The Service worker's behaviour follows that design goal:
 
-â€¢	Caching an application is like installing a native application. The application is cached as one unit, and all files update together.
+•	Caching an application is like installing a native application. The application is cached as one unit, and all files update together.
 
-â€¢	A running application continues to run with the same version of all files. It does not suddenly start receiving cached files from a newer version, which are likely incompatible.
+•	A running application continues to run with the same version of all files. It does not suddenly start receiving cached files from a newer version, which are likely incompatible.
 
-â€¢	When users refresh the application, they see the latest fully cached version. New tabs load the latest cached code.
+•	When users refresh the application, they see the latest fully cached version. New tabs load the latest cached code.
 
-â€¢	Updates happen in the background, relatively quickly after changes are published. The previous version of the application is served until an update is installed and ready.
+•	Updates happen in the background, relatively quickly after changes are published. The previous version of the application is served until an update is installed and ready.
 
-â€¢	The service worker conserves bandwidth when possible. Resources are only downloaded if they've changed.
+•	The service worker conserves bandwidth when possible. Resources are only downloaded if they've changed.
 
 To support these behaviours, the Angular service worker loads a manifest file (ngsw-config.json) from the server. The manifest describes the resources to cache and includes hashes of every file's contents. When an update to the application is deployed, the contents of the manifest change, informing the service worker that a new version of the application should be downloaded and cached.
 
@@ -41,15 +41,15 @@ With the server running, you can point your browser at http://localhost:8080/. Y
 
 Notice that all of the files the browser needs to render this application are cached. The ngsw-config.json boilerplate configuration is set up to cache the specific resources:
 
-â€¢	index.html.
+•	index.html.
 
-â€¢	favicon.ico.
+•	favicon.ico.
 
-â€¢	Build artifacts (JS and CSS bundles).
+•	Build artifacts (JS and CSS bundles).
 
-â€¢	Anything under assets.
+•	Anything under assets.
 
-â€¢	Images and fonts directly under the configured outputPath (by default ./dist/<project-name>/)
+•	Images and fonts directly under the configured outputPath (by default ./dist/<project-name>/)
   
 You can modify the default configuration to your need and add Rest API URLs as well.
 
@@ -57,11 +57,11 @@ You can modify the default configuration to your need and add Rest API URLs as w
 
 Export Class CacheService {
 
-â€¦â€¦â€¦â€¦â€¦..
+……………..
 
 updates.available.subscribe(event => { console.log('current version is', event.current); console.log('available version is', event.available); }); updates.activated.subscribe(event => { console.log('old version was', event.previous); console.log('new version is', event.current); });
 
-â€¦â€¦â€¦â€¦â€¦â€¦
+………………
 
 }
 
@@ -69,11 +69,11 @@ updates.available.subscribe(event => { console.log('current version is', event.c
 
 Export Class CacheService {
 
-â€¦â€¦â€¦â€¦â€¦..
+……………..
 
 const appIsStable$ = appRef.isStable.pipe(first(isStable => isStable === true)); const everySixHours$ = interval(6 * 60 * 60 * 1000); const everySixHoursOnceAppIsStable$ = concat(appIsStable$, everySixHours$); everySixHoursOnceAppIsStable$.subscribe(() => updates.checkForUpdate());
 
-â€¦â€¦â€¦â€¦â€¦â€¦
+………………
 
 }
 
@@ -81,23 +81,10 @@ const appIsStable$ = appRef.isStable.pipe(first(isStable => isStable === true));
 
 Export Class CacheService {
 
-â€¦â€¦â€¦â€¦â€¦..
+……………..
 
 updates.available.subscribe(event => { if (promptUser(event)) { updates.activateUpdate().then(() => document.location.reload()); } });
 
-â€¦â€¦â€¦â€¦â€¦â€¦
+………………
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

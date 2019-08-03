@@ -1,14 +1,22 @@
 {
   "name": "cache-handler",
-  "version": "0.0.10",
+  "version": "0.3.6",
   "description": "Library that will take care of cache handling for any rich enterprise application",
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "test": "npm run build && jasmine src/**/*_spec.js",
-    "postinstall": "ng add @angular/pwa"
+    "postinstall": "ng add @angular/pwa@0.800.1"
   },
   "keywords": [
-    "schematics"
+    "schematics",
+    "cache",
+    "angular",
+    "angular5",
+    "angular6",
+    "angular7",
+    "angular8",
+    "caching",
+    "client side"
   ],
   "author": "",
   "license": "MIT",
